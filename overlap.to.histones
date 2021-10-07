@@ -23,7 +23,7 @@ histone.exon <- as.data.frame(cbind(start=1556,stop=1646,yaxis=20),size=3)
     geom_line(aes(y=yaxis),na.rm=TRUE)+
 	geom_segment(data=histone.loci,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="red")+
 	geom_segment(data=histone.exon,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="darkblue")+
-	scale_x_continuous(name="Pig histone H2A accession region (bp)",label=c(0,662,1323,1984,2646), breaks=c(0,662,1323,1984,2646))+
+	scale_x_continuous(name="Pig histone H2A (bp)",label=c(0,662,1323,1984,2646), breaks=c(0,662,1323,1984,2646))+
     theme_classic()+
     ylab("Number of overlapping LASTZ hits")+
     theme(axis.title.x = element_text(color = "grey20", size = 9.5, angle = 0, hjust = .5, vjust = 0, face = "plain"),
@@ -57,7 +57,7 @@ lagen.exon <- as.data.frame(cbind(start=16,stop=115,yaxis=20),size=3)
     geom_line(aes(y=yaxis),na.rm=TRUE)+
 	geom_segment(data=lagen.loci,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="red")+
 	geom_segment(data=lagen.exon,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="darkblue")+
-	scale_x_continuous(name="Lagenorhynchus obliquidens histone H2A accession region (bp)",label=c(0,138,276,414,552), breaks=c(0,138,276,414,552))+
+	scale_x_continuous(name="Lagenorhynchus obliquidens histone H2A (bp)",label=c(0,138,276,414,552), breaks=c(0,138,276,414,552))+
     theme_classic()+
     ylab("Number of overlapping LASTZ hits")+
     theme(axis.title.x = element_text(color = "grey20", size = 9.5, angle = 0, hjust = .5, vjust = 0, face = "plain"),
