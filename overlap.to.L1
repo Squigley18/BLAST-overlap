@@ -28,7 +28,7 @@ LINE <- as.data.frame(cbind(start=0.03,stop=15.73,yaxis=50))
 	geom_segment(data=UTR3,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="purple")+
 	geom_segment(data=repeat.1,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="darkblue")+
 	geom_segment(data=repeat.2,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="darkblue")+
-	scale_x_continuous(name="L1 accession region (Mbp)",label=c(0,2500,5000,7500), breaks=c(0,5,10,15))+
+	scale_x_continuous(name="L1 accession region (bp)",label=c(0,2500,5000,7500), breaks=c(0,5,10,15))+
     theme_classic()+
     ylab("Number of overlapping LASTZ hits")+
     theme(axis.title.x = element_text(color = "grey20", size = 9.5, angle = 0, hjust = .5, vjust = 0, face = "plain"),
@@ -67,7 +67,7 @@ LINE <- as.data.frame(cbind(start=15,stop=7865,yaxis=50))
 	geom_segment(data=UTR3,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="purple")+
 	geom_segment(data=repeat.1,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="darkblue")+
 	geom_segment(data=repeat.2,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="darkblue")+
-	scale_x_continuous(name="L1 accession region (Mbp)",label=c(0,2500,5000,7500), breaks=c(0,2500,5000,7500))+
+	scale_x_continuous(name="L1 accession region (bp)",label=c(0,2500,5000,7500), breaks=c(0,2500,5000,7500))+
     theme_classic()+
     ylab("Number of overlapping LASTZ hits")+
     theme(axis.title.x = element_text(color = "grey20", size = 9.5, angle = 0, hjust = .5, vjust = 0, face = "plain"),
@@ -119,7 +119,7 @@ LINE <- as.data.frame(cbind(start=15,stop=7865,yaxis=50))
 	geom_segment(data=UTR3,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="purple")+
 	geom_segment(data=repeat.1,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="darkblue")+
 	geom_segment(data=repeat.2,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="darkblue")+
-	scale_x_continuous(name="L1 accession region (Mbp)",label=c(0,2500,5000,7500), breaks=c(0,2500,5000,7500))+
+	scale_x_continuous(name="L1 accession region (bp)",label=c(0,2500,5000,7500), breaks=c(0,2500,5000,7500))+
     theme_classic()+
     ylab("Number of overlapping LASTZ hits")+
     theme(axis.title.x = element_text(color = "grey20", size = 9.5, angle = 0, hjust = .5, vjust = 0, face = "plain"),
