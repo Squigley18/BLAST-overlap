@@ -1,0 +1,30 @@
+overlaps.pig.staggered.loci <- function(tab){
+subject <-  read.table(tab, header = FALSE, sep = "",
+                            numerals = c("allow.loss", "warn.loss","no.loss"),
+                            stringsAsFactors = TRUE) 
+
+subject <- subject %>% dplyr::rename(start = V1,stop = V2) 
+chromosome <- "X"
+strand <- "*" 
+hits <- cbind(subject,chromosome,strand)
+hitsGF <- GRfromDF(hits)
+wif.acc <- make.windows(1,3035)
+overlap.hits <- countOverlaps(wif.acc,hitsGF)
+overlaps <- as.data.frame(overlap.hits)
+xaxis <- seq(1:3035)
+overlap.df <- as.data.frame(cbind(overlap.hits,xaxis))
+overlap.df[overlap.df==0] <- NA
+overlap.df <- overlap.df %>% dplyr::rename(yaxis = overlap.hits)
+pig.loci <- as.data.frame(cbind(start=1,stop=3035,yaxis=10))
+
+  overlap.hit.plot <- ggplot(overlap.df,aes(x=xaxis,na.rm=TRUE))+
+    geom_line(aes(y=yaxis),na.rm=TRUE)+
+	geom_segment(data=pig.loci,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="red")+
+	scale_x_continuous(name="Pig uncharacterised loci LOC110257827 (bp)",label=c(0,750,1500,2250,3035), breaks=c(0,750,1500,2250,3035))+
+    theme_classic()+
+    ylab("Number of overlapping LASTZ hits")+
+    theme(axis.title.x = element_text(color = "grey20", size = 9.5, angle = 0, hjust = .5, vjust = 0, face = "plain"),
+          axis.text.x=element_text(size=9.5),axis.text.y=element_text(size=9.5),
+          axis.title.y = element_text(color = "grey20", size = 9.5, angle = 90, hjust = .5, vjust = .5, face = "plain"),
+          title = element_text(color = "grey17", size= 10, angle = 0, hjust = .5, vjust = 0, face = "bold"))
+}
