@@ -1,0 +1,69 @@
+
+overlaps.DCT <- function(tab){
+subject <-  read.table(tab, header = FALSE, sep = "",
+                            numerals = c("allow.loss", "warn.loss","no.loss"),
+                            stringsAsFactors = TRUE) 
+
+subject <- subject %>% dplyr::rename(start = V1,stop = V2) 
+chromosome <- "X"
+strand <- "*" 
+hits <- cbind(subject,chromosome,strand)
+hitsGF <- GRfromDF(hits)
+wif.acc <- make.windows(1,127098)
+overlap.hits <- countOverlaps(wif.acc,hitsGF)
+overlaps <- as.data.frame(overlap.hits)
+xaxis <- seq(1:127098)
+overlap.df <- as.data.frame(cbind(overlap.hits,xaxis))
+overlap.df[overlap.df==0] <- NA
+overlap.df <- overlap.df %>% dplyr::rename(yaxis = overlap.hits)
+DCT.gene <- as.data.frame(cbind(start=13585,stop=60979,yaxis=10))
+GPC6.gene <- as.data.frame(cbind(start=91652,stop=111903,yaxis=10))
+
+  overlap.hit.plot <- ggplot(overlap.df,aes(x=xaxis,na.rm=TRUE))+
+    geom_line(aes(y=yaxis),na.rm=TRUE)+
+	geom_segment(data=DCT.gene,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="red")+
+	geom_segment(data=GPC6.gene,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="darkblue")+
+	scale_x_continuous(name="DCT accession region (bp)",label=c(0,31750,63500,95250,127000), breaks=c(0,31750,63500,95250,127000))+
+    theme_classic()+
+    ylab("Number of overlapping LASTZ hits")+
+    theme(axis.title.x = element_text(color = "grey20", size = 9.5, angle = 0, hjust = .5, vjust = 0, face = "plain"),
+          axis.text.x=element_text(size=9.5),axis.text.y=element_text(size=9.5),
+          axis.title.y = element_text(color = "grey20", size = 9.5, angle = 90, hjust = .5, vjust = .5, face = "plain"),
+          title = element_text(color = "grey17", size= 10, angle = 0, hjust = .5, vjust = 0, face = "bold"))
+}
+
+overlaps.CBX6 <- function(tab){
+subject <-  read.table(tab, header = FALSE, sep = "",
+                            numerals = c("allow.loss", "warn.loss","no.loss"),
+                            stringsAsFactors = TRUE) 
+
+subject <- subject %>% dplyr::rename(start = V1,stop = V2) 
+chromosome <- "X"
+strand <- "*" 
+hits <- cbind(subject,chromosome,strand)
+hitsGF <- GRfromDF(hits)
+wif.acc <- make.windows(1,163158)
+overlap.hits <- countOverlaps(wif.acc,hitsGF)
+overlaps <- as.data.frame(overlap.hits)
+xaxis <- seq(1:163158)
+overlap.df <- as.data.frame(cbind(overlap.hits,xaxis))
+overlap.df[overlap.df==0] <- NA
+overlap.df <- overlap.df %>% dplyr::rename(yaxis = overlap.hits)
+CBX6.gene <- as.data.frame(cbind(start=61860,stop=67422,yaxis=10))
+APOBEC3.gene <- as.data.frame(cbind(start=132076,stop=149427,yaxis=10))
+APOBEC3.exons <- as.data.frame(cbind(start=c(132067,134520,138167,138855,139461,139679,142439,147172,148256,148772,149211),
+stop=c(132379,134670,138446,138969,139574,140037,142586,147328,148523,148887,149427),yaxis=5))
+
+  overlap.hit.plot <- ggplot(overlap.df,aes(x=xaxis,na.rm=TRUE))+
+    geom_line(aes(y=yaxis),na.rm=TRUE)+
+	geom_segment(data=CBX6.gene,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="red")+
+	geom_segment(data=APOBEC3.gene,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="purple")+
+	geom_segment(data=APOBEC3.exons,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="darkblue")+
+	scale_x_continuous(name="CBX6 accession region (bp)",label=c(0,40750,81500,122250,163000), breaks=c(0,40750,81500,122250,163000))+
+    theme_classic()+
+    ylab("Number of overlapping LASTZ hits")+
+    theme(axis.title.x = element_text(color = "grey20", size = 9.5, angle = 0, hjust = .5, vjust = 0, face = "plain"),
+          axis.text.x=element_text(size=9.5),axis.text.y=element_text(size=9.5),
+          axis.title.y = element_text(color = "grey20", size = 9.5, angle = 90, hjust = .5, vjust = .5, face = "plain"),
+          title = element_text(color = "grey17", size= 10, angle = 0, hjust = .5, vjust = 0, face = "bold"))
+}
