@@ -1,0 +1,67 @@
+overlaps.to.pig.histone <- function(tab){
+subject <-  read.table(tab, header = FALSE, sep = "",
+                            numerals = c("allow.loss", "warn.loss","no.loss"),
+                            stringsAsFactors = TRUE) 
+
+subject <- subject %>% dplyr::rename(start = V1,stop = V2) 
+chromosome <- "X"
+strand <- "*" 
+hits <- cbind(subject,chromosome,strand)
+hitsGF <- GRfromDF(hits)
+wif.acc <- make.windows(1,2646)
+overlap.hits <- countOverlaps(wif.acc,hitsGF)
+overlaps <- as.data.frame(overlap.hits)
+xaxis <- seq(1:2646)
+overlap.df <- as.data.frame(cbind(overlap.hits,xaxis))
+overlap.df[overlap.df==0] <- NA
+overlap.df <- overlap.df %>% dplyr::rename(yaxis = overlap.hits)
+histone.loci <- as.data.frame(cbind(start=1,stop=2646,yaxis=10))
+histone.exon <- as.data.frame(cbind(start=1556,stop=1646,yaxis=20),size=3)
+
+
+  overlap.hit.plot <- ggplot(overlap.df,aes(x=xaxis,na.rm=TRUE))+
+    geom_line(aes(y=yaxis),na.rm=TRUE)+
+	geom_segment(data=histone.loci,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="red")+
+	geom_segment(data=histone.exon,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="darkblue")+
+	scale_x_continuous(name="Pig histone H2A accession region (bp)",label=c(0,662,1323,1984,2646), breaks=c(0,662,1323,1984,2646))+
+    theme_classic()+
+    ylab("Number of overlapping LASTZ hits")+
+    theme(axis.title.x = element_text(color = "grey20", size = 9.5, angle = 0, hjust = .5, vjust = 0, face = "plain"),
+          axis.text.x=element_text(size=9.5),axis.text.y=element_text(size=9.5),
+          axis.title.y = element_text(color = "grey20", size = 9.5, angle = 90, hjust = .5, vjust = .5, face = "plain"),
+          title = element_text(color = "grey17", size= 10, angle = 0, hjust = .5, vjust = 0, face = "bold"))
+}
+
+overlaps.to.lagen.histone <- function(tab){
+subject <-  read.table(tab, header = FALSE, sep = "",
+                            numerals = c("allow.loss", "warn.loss","no.loss"),
+                            stringsAsFactors = TRUE) 
+
+subject <- subject %>% dplyr::rename(start = V1,stop = V2) 
+chromosome <- "X"
+strand <- "*" 
+hits <- cbind(subject,chromosome,strand)
+hitsGF <- GRfromDF(hits)
+wif.acc <- make.windows(1,552)
+overlap.hits <- countOverlaps(wif.acc,hitsGF)
+overlaps <- as.data.frame(overlap.hits)
+xaxis <- seq(1:552)
+overlap.df <- as.data.frame(cbind(overlap.hits,xaxis))
+overlap.df[overlap.df==0] <- NA
+overlap.df <- overlap.df %>% dplyr::rename(yaxis = overlap.hits)
+lagen.loci <- as.data.frame(cbind(start=1,stop=552,yaxis=10))
+lagen.exon <- as.data.frame(cbind(start=16,stop=115,yaxis=20),size=3)
+
+
+  overlap.hit.plot <- ggplot(overlap.df,aes(x=xaxis,na.rm=TRUE))+
+    geom_line(aes(y=yaxis),na.rm=TRUE)+
+	geom_segment(data=lagen.loci,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="red")+
+	geom_segment(data=lagen.exon,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="darkblue")+
+	scale_x_continuous(name="Lagenorhynchus obliquidens histone H2A accession region (bp)",label=c(0,138,276,414,552), breaks=c(0,138,276,414,552))+
+    theme_classic()+
+    ylab("Number of overlapping LASTZ hits")+
+    theme(axis.title.x = element_text(color = "grey20", size = 9.5, angle = 0, hjust = .5, vjust = 0, face = "plain"),
+          axis.text.x=element_text(size=9.5),axis.text.y=element_text(size=9.5),
+          axis.title.y = element_text(color = "grey20", size = 9.5, angle = 90, hjust = .5, vjust = .5, face = "plain"),
+          title = element_text(color = "grey17", size= 10, angle = 0, hjust = .5, vjust = 0, face = "bold"))
+}
