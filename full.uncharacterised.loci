@@ -1,0 +1,62 @@
+
+overlaps.pig.full.loci <- function(tab){
+subject <-  read.table(tab, header = FALSE, sep = "",
+                            numerals = c("allow.loss", "warn.loss","no.loss"),
+                            stringsAsFactors = TRUE) 
+
+subject <- subject %>% dplyr::rename(start = V1,stop = V2) 
+chromosome <- "X"
+strand <- "*" 
+hits <- cbind(subject,chromosome,strand)
+hitsGF <- GRfromDF(hits)
+wif.acc <- make.windows(1,1746)
+overlap.hits <- countOverlaps(wif.acc,hitsGF)
+overlaps <- as.data.frame(overlap.hits)
+xaxis <- seq(1:1746)
+overlap.df <- as.data.frame(cbind(overlap.hits,xaxis))
+overlap.df[overlap.df==0] <- NA
+overlap.df <- overlap.df %>% dplyr::rename(yaxis = overlap.hits)
+pig.loci <- as.data.frame(cbind(start=1,stop=1746,yaxis=10),size=3)
+
+  overlap.hit.plot <- ggplot(overlap.df,aes(x=xaxis,na.rm=TRUE))+
+    geom_line(aes(y=yaxis),na.rm=TRUE)+
+	geom_segment(data=pig.loci,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="red")+
+	scale_x_continuous(name="Pig uncharacterised loci LOC110257707 (bp)",label=c(0,437,873,1309,1746), breaks=c(0,437,873,1309,1746))+
+    theme_classic()+
+    ylab("Number of overlapping LASTZ hits")+
+    theme(axis.title.x = element_text(color = "grey20", size = 9.5, angle = 0, hjust = .5, vjust = 0, face = "plain"),
+          axis.text.x=element_text(size=9.5),axis.text.y=element_text(size=9.5),
+          axis.title.y = element_text(color = "grey20", size = 9.5, angle = 90, hjust = .5, vjust = .5, face = "plain"),
+          title = element_text(color = "grey17", size= 10, angle = 0, hjust = .5, vjust = 0, face = "bold"))
+}
+
+overlaps.camel.full.loci <- function(tab){
+subject <-  read.table(tab, header = FALSE, sep = "",
+                            numerals = c("allow.loss", "warn.loss","no.loss"),
+                            stringsAsFactors = TRUE) 
+
+subject <- subject %>% dplyr::rename(start = V1,stop = V2) 
+chromosome <- "X"
+strand <- "*" 
+hits <- cbind(subject,chromosome,strand)
+hitsGF <- GRfromDF(hits)
+wif.acc <- make.windows(1,917)
+overlap.hits <- countOverlaps(wif.acc,hitsGF)
+overlaps <- as.data.frame(overlap.hits)
+xaxis <- seq(1:917)
+overlap.df <- as.data.frame(cbind(overlap.hits,xaxis))
+overlap.df[overlap.df==0] <- NA
+overlap.df <- overlap.df %>% dplyr::rename(yaxis = overlap.hits)
+camel.loci <- as.data.frame(cbind(start=1,stop=917,yaxis=10),size=3)
+
+  overlap.hit.plot <- ggplot(overlap.df,aes(x=xaxis,na.rm=TRUE))+
+    geom_line(aes(y=yaxis),na.rm=TRUE)+
+	geom_segment(data=camel.loci,aes(x=start,xend=stop,y=yaxis,yend=yaxis),color="red")+
+	scale_x_continuous(name="Camel uncharacterised loci LOC116152181 (bp)",label=c(0,230,459,687,917), breaks=c(0,230,459,687,917))+
+    theme_classic()+
+    ylab("Number of overlapping LASTZ hits")+
+    theme(axis.title.x = element_text(color = "grey20", size = 9.5, angle = 0, hjust = .5, vjust = 0, face = "plain"),
+          axis.text.x=element_text(size=9.5),axis.text.y=element_text(size=9.5),
+          axis.title.y = element_text(color = "grey20", size = 9.5, angle = 90, hjust = .5, vjust = .5, face = "plain"),
+          title = element_text(color = "grey17", size= 10, angle = 0, hjust = .5, vjust = 0, face = "bold"))
+}
