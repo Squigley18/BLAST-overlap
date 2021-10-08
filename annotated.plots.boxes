@@ -139,6 +139,8 @@ pbdc1.myo <- overlaps.to.myostatin("pbdc1.myo")
 ggsave("pbdc1.myo.svg",pbdc1.myo,unit="mm",height=85,width=120)
 myo.42737 <- overlaps.to.myostatin("myo.42737")
 ggsave("myo.42737.svg",myo.42737,unit="mm",height=85,width=120)
+myo.IFNAR <- overlaps.to.myostatin("myo.IFNAR")
+ggsave("myo.IFNAR.svg",myo.IFNAR,unit="mm",height=85,width=120)
 
 overlaps.to.pig.histone <- function(tab){
 subject <-  read.table(tab, header = FALSE, sep = "",
