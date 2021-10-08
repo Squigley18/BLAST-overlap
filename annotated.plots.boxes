@@ -517,3 +517,41 @@ cow.intron22.protein <- as.data.frame(cbind(start=56,stop=1138,yaxis=-7))
 
 cow.factor <- overlaps.cow.factor("cow.factor")
 ggsave("cow.factor.svg",cow.factor,unit="mm",height=85,width=120)
+
+
+overlaps.cat.factor <- function(tab){
+subject <-  read.table(tab, header = FALSE, sep = "",
+                            numerals = c("allow.loss", "warn.loss","no.loss"),
+                            stringsAsFactors = TRUE) 
+
+subject <- subject %>% dplyr::rename(start = V1,stop = V2) 
+chromosome <- "X"
+strand <- "*" 
+hits <- cbind(subject,chromosome,strand)
+hitsGF <- GRfromDF(hits)
+wif.acc <- make.windows(1,1274)
+overlap.hits <- countOverlaps(wif.acc,hitsGF)
+overlaps <- as.data.frame(overlap.hits)
+xaxis <- seq(1:1274)
+overlap.df <- as.data.frame(cbind(overlap.hits,xaxis))
+overlap.df <- overlap.df %>% dplyr::rename(yaxis = overlap.hits)
+cat.loci <- as.data.frame(cbind(start=1,stop=1274,yaxis=-20))
+cat.intron22.protein <- as.data.frame(cbind(start=46,stop=1173,yaxis=-12))
+
+  overlap.hit.plot <- ggplot(overlap.df,aes(x=xaxis,na.rm=TRUE))+
+    geom_line(aes(y=yaxis),na.rm=TRUE)+
+	geom_rect(data=cat.loci,aes(xmin=start,xmax=stop,ymin=yaxis,ymax=yaxis+3),fill="darkgreen", col=NA, inherit.aes=F)+
+	geom_rect(data=cat.intron22.protein,aes(xmin=start,xmax=stop,ymin=yaxis,ymax=yaxis+3),fill="yellow2", col=NA, inherit.aes=F)+
+	scale_x_continuous(name="Cat factor 8 intron 22 protein (bp)",label=c(0,319,637,956,1274), breaks=c(0,319,637,956,1274))+
+    theme_classic()+
+    ylab("Number of overlapping LASTZ hits")+
+	annotate("text", x = c(637,610), y = c(-15,-6),
+             label = c("LOC101095239","intron 22 protein") , color="black", size=3)+
+    theme(axis.title.x = element_text(color = "grey20", size = 9.5, angle = 0, hjust = .5, vjust = 0, face = "plain"),
+          axis.text.x=element_text(size=9.5),axis.text.y=element_text(size=9.5),
+          axis.title.y = element_text(color = "grey20", size = 9.5, angle = 90, hjust = .5, vjust = .5, face = "plain"),
+          title = element_text(color = "grey17", size= 10, angle = 0, hjust = .5, vjust = 0, face = "bold"))
+}
+
+cat.factor <- overlaps.cat.factor("cat.factor")
+ggsave("cat.factor.svg",cat.factor,unit="mm",height=85,width=120)
