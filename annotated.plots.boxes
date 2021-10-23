@@ -557,3 +557,83 @@ cat.intron22.protein <- as.data.frame(cbind(start=46,stop=1173,yaxis=-12))
 
 cat.factor <- overlaps.cat.factor("cat.factor")
 ggsave("cat.factor.svg",cat.factor,unit="mm",height=85,width=120)
+
+overlaps.to.HSFX <- function(tab){
+subject <-  read.table(tab, header = FALSE, sep = "",
+                            numerals = c("allow.loss", "warn.loss","no.loss"),
+                            stringsAsFactors = TRUE) 
+
+subject <- subject %>% dplyr::rename(start = V1,stop = V2) 
+chromosome <- "X"
+strand <- "*" 
+hits <- cbind(subject,chromosome,strand)
+hitsGF <- GRfromDF(hits)
+HSFX.acc <- make.windows(1,1216)
+overlap.hits <- countOverlaps(HSFX.acc,hitsGF)
+overlaps <- as.data.frame(overlap.hits)
+xaxis <- seq(1:1216)
+overlap.df <- as.data.frame(cbind(overlap.hits,xaxis))
+overlap.df <- overlap.df %>% dplyr::rename(yaxis = overlap.hits)
+locus <- as.data.frame(cbind(start=1,stop=1216,yaxis=-10))
+gene.HSFX <- as.data.frame(cbind(start=218,stop=1138,yaxis=-5))
+exon <- as.data.frame(cbind(start=417,stop=486,yaxis=-5))
+
+  overlap.hit.plot <- ggplot(overlap.df,aes(x=xaxis,na.rm=TRUE))+
+    geom_line(aes(y=yaxis),na.rm=TRUE)+
+	geom_rect(data=locus,aes(xmin=start,xmax=stop,ymin=yaxis,ymax=yaxis+3),fill="darkgreen", col=NA, inherit.aes=F)+
+	geom_rect(data=gene.HSFX,aes(xmin=start,xmax=stop,ymin=yaxis,ymax=yaxis+3),fill="red", col=NA, inherit.aes=F)+
+	geom_rect(data=exon,aes(xmin=start,xmax=stop,ymin=yaxis,ymax=yaxis+3),fill="black", col=NA, inherit.aes=F)+
+	scale_x_continuous(name="Ferret HSFX accession region (bp)",label=c(0,304,608,912,1216), breaks=c(0,304,608,912,1216))+
+    theme_classic()+
+    ylab("Number of overlapping LASTZ hits")+
+	annotate("text", x = c(678,609), y = c(-1,-7),
+             label = c("HSFX","LOC106003320") , color="black", size=3)+
+    theme(axis.title.x = element_text(color = "grey20", size = 9.5, angle = 0, hjust = .5, vjust = 0, face = "plain"),
+          axis.text.x=element_text(size=9.5),axis.text.y=element_text(size=9.5),
+          axis.title.y = element_text(color = "grey20", size = 9.5, angle = 90, hjust = .5, vjust = .5, face = "plain"),
+          title = element_text(color = "grey17", size= 10, angle = 0, hjust = .5, vjust = 0, face = "bold"))
+}
+
+hsfx <- overlaps.to.HSFX("HSF.ferret")
+ggsave("HSF.ferret.svg",hsfx,unit="mm",height=85,width=120)
+
+overlaps.to.camel.HSFX <- function(tab){
+subject <-  read.table(tab, header = FALSE, sep = "",
+                            numerals = c("allow.loss", "warn.loss","no.loss"),
+                            stringsAsFactors = TRUE) 
+
+subject <- subject %>% dplyr::rename(start = V1,stop = V2) 
+chromosome <- "X"
+strand <- "*" 
+hits <- cbind(subject,chromosome,strand)
+hitsGF <- GRfromDF(hits)
+HSFX.acc <- make.windows(1,4698)
+overlap.hits <- countOverlaps(HSFX.acc,hitsGF)
+overlaps <- as.data.frame(overlap.hits)
+xaxis <- seq(1:4698)
+overlap.df <- as.data.frame(cbind(overlap.hits,xaxis))
+overlap.df <- overlap.df %>% dplyr::rename(yaxis = overlap.hits)
+locus <- as.data.frame(cbind(start=1,stop=4698,yaxis=-10))
+gene.HSFX <- as.data.frame(cbind(start=1655,stop=2899,yaxis=-5))
+exon <- as.data.frame(cbind(start=1747,stop=1861,yaxis=-5))
+
+  overlap.hit.plot <- ggplot(overlap.df,aes(x=xaxis,na.rm=TRUE))+
+    geom_line(aes(y=yaxis),na.rm=TRUE)+
+	geom_rect(data=locus,aes(xmin=start,xmax=stop,ymin=yaxis,ymax=yaxis+3),fill="darkgreen", col=NA, inherit.aes=F)+
+	geom_rect(data=gene.HSFX,aes(xmin=start,xmax=stop,ymin=yaxis,ymax=yaxis+3),fill="red", col=NA, inherit.aes=F)+
+	geom_rect(data=exon,aes(xmin=start,xmax=stop,ymin=yaxis,ymax=yaxis+3),fill="black", col=NA, inherit.aes=F)+
+	scale_x_continuous(name="Camel HSFX accession region (bp)",label=c(0,1174,2348,3522,4698), breaks=c(0,1174,2348,3522,4698))+
+    theme_classic()+
+    ylab("Number of overlapping LASTZ hits")+
+	annotate("text", x = c(2277,2349), y = c(-1,-7),
+             label = c("HSFX","LOC106003320") , color="black", size=3)+
+    theme(axis.title.x = element_text(color = "grey20", size = 9.5, angle = 0, hjust = .5, vjust = 0, face = "plain"),
+          axis.text.x=element_text(size=9.5),axis.text.y=element_text(size=9.5),
+          axis.title.y = element_text(color = "grey20", size = 9.5, angle = 90, hjust = .5, vjust = .5, face = "plain"),
+          title = element_text(color = "grey17", size= 10, angle = 0, hjust = .5, vjust = 0, face = "bold"))
+}
+
+hsfx.c <- overlaps.to.camel.HSFX("HSF.camel")
+ggsave("heatfactor.camel.svg",hsfx.c,unit="mm",height=85,width=120)
+
+
